@@ -1,0 +1,86 @@
+{
+  "_comment": "llama.cpp 通用推理配置模板",
+  "_doc": "所有可用参数的完整说明，详见 CONFIG_GUIDE.md",
+
+  "model": {
+    "path": ".\\models\\your-model.gguf",
+    "description": "模型权重文件路径 (.gguf)"
+  },
+
+  "gpu": {
+    "n_gpu_layers": 99,
+    "_n_gpu_layers": "offload 到 GPU 的层数 (0=纯CPU, 99=全部)。显存不足时减小此值",
+    "flash_attn": true,
+    "_flash_attn": "启用 Flash Attention，显著降低 KV Cache 显存占用，强烈推荐开启",
+    "cache_type_k": "f16",
+    "_cache_type_k": "KV Cache K 量化类型: f16(高质量) / q8_0 / q4_0(省显存)。长上下文推荐 q8_0",
+    "cache_type_v": "f16",
+    "_cache_type_v": "KV Cache V 量化类型: f16(高质量) / q8_0 / q4_0"
+  },
+
+  "context": {
+    "ctx_size": 32768,
+    "_ctx_size": "上下文长度 (tokens)。越大越占显存。计算公式: 显存(MB) ≈ ctx_size * n_layers * (head_dim * n_kv_heads) * 2 / 1024 / 1024",
+    "parallel": 4,
+    "_parallel": "并发请求槽数 (n_parallel)。同时处理的对话数量。每个槽占用一份 KV Cache",
+    "cont_batching": true,
+    "_cont_batching": "连续批处理 (Continuous Batching)。新请求可以在旧请求生成过程中加入，显著提升吞吐量"
+  },
+
+  "cpu": {
+    "threads": 16,
+    "_threads": "CPU 推理线程数。建议设为物理核心数或略少，留一些给系统和 GPU 调度",
+    "threads_batch": 16,
+    "_threads_batch": "批处理线程数。处理 prompt 输入时使用，通常与 threads 相同"
+  },
+
+  "server": {
+    "port": 8080,
+    "_port": "API 服务端口",
+    "host": "0.0.0.0",
+    "_host": "绑定地址。0.0.0.0=允许局域网访问, 127.0.0.1=仅本机",
+    "timeout": 300,
+    "_timeout": "请求超时时间 (秒)。单条请求最长等待时间"
+  },
+
+  "sampling": {
+    "temp": 0.7,
+    "_temp": "采样温度 (0.0~2.0)。控制随机性: 0.1=非常确定, 0.7=平衡, 1.2=非常有创意",
+    "top_k": 40,
+    "_top_k": "Top-K 采样 (1~100)。每次只从概率最高的 K 个 token 中选择。1=贪婪解码, 40=常用值",
+    "top_p": 0.95,
+    "_top_p": "Top-P / Nucleus 采样 (0.0~1.0)。从累积概率达到 P 的最小 token 集合中选择。0.9~0.95 常用",
+    "min_p": 0.05,
+    "_min_p": "Min-P 采样 (0.0~1.0)。过滤掉概率低于 (最高概率 * min_p) 的 token。可减少无意义输出",
+    "repeat_penalty": 1.1,
+    "_repeat_penalty": "重复惩罚倍数 (1.0=无惩罚, 1.1~1.2=轻微惩罚)。>1.0 会降低已出现 token 的采样概率",
+    "presence_penalty": 0.0,
+    "_presence_penalty": "存在惩罚 (-2.0~2.0)。正数使已出现过的 token 更不容易再次出现，减少重复",
+    "frequency_penalty": 0.0,
+    "_frequency_penalty": "频率惩罚 (-2.0~2.0)。正数降低高频 token 的概率，比 presence_penalty 更激进"
+  },
+
+  "generation": {
+    "n_predict": -1,
+    "_n_predict": "单次最大生成 token 数 (-1=无限制)。API 调用中的 max_tokens 不会超过此值",
+    "seed": -1,
+    "_seed": "随机种子 (-1=每次随机, 固定值如 42 可复现结果)"
+  },
+
+  "memory": {
+    "mlock": false,
+    "_mlock": "mlock 锁定内存，防止操作系统将模型数据交换到磁盘。需要管理员权限",
+    "no_mmap": false,
+    "_no_mmap": "禁用内存映射 (mmap)。true=完整加载到 RAM 再使用，false=按需从磁盘加载。SSD 推荐 false"
+  },
+
+  "logging": {
+    "verbose": false,
+    "_verbose": "详细日志输出。调试时开启，查看 GPU offloading 详情和性能数据"
+  },
+
+  "advanced": {
+    "extra_args": "",
+    "_extra_args": "额外自定义参数 (空格分隔的字符串)。例如: '--defrag-thold 0.1 --slot-save-path slots'"
+  }
+}
