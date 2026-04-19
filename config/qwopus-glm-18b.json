@@ -80,7 +80,7 @@
   },
 
   "advanced": {
-    "extra_args": "",
-    "_extra_args": "额外自定义参数"
+    "extra_args": "--reasoning-format deepseek --defrag-thold 0.1",
+    "_extra_args": "reasoning-format=deepseek: 思考过程分离到 reasoning_content 字段流式输出; defrag-thold: KV碎片整理"
   }
 }
