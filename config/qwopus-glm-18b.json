@@ -12,17 +12,17 @@
     "_n_gpu_layers": "offload 到 GPU 的层数 (0=纯CPU, 99=全部)",
     "flash_attn": true,
     "_flash_attn": "启用 Flash Attention，显著降低显存占用",
-    "cache_type_k": "f16",
-    "_cache_type_k": "KV Cache K 类型: f16 / q8_0 / q4_0",
-    "cache_type_v": "f16",
+    "cache_type_k": "q4_0",
+    "_cache_type_k": "KV Cache K 类型: f16 / q8_0 / q4_0。长上下文必须用q4_0省75%显存",
+    "cache_type_v": "q4_0",
     "_cache_type_v": "KV Cache V 类型: f16 / q8_0 / q4_0"
   },
 
   "context": {
-    "ctx_size": 32768,
-    "_ctx_size": "上下文长度 (tokens)。18B Q4 占用约 9GB 显存，可设 32K~64K",
-    "parallel": 4,
-    "_parallel": "并发请求槽数",
+    "ctx_size": 262144,
+    "_ctx_size": "上下文长度 (tokens)。256K超长上下文，需q4_0 KV Cache节省显存",
+    "parallel": 1,
+    "_parallel": "并发请求槽数=1，单个对话独享256K完整上下文",
     "cont_batching": true,
     "_cont_batching": "连续批处理，提升吞吐量"
   },
