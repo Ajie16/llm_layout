@@ -29,3 +29,7 @@ desktop.ini
 # llama.cpp 推理引擎 (请从 GitHub Release 单独下载)
 llama/
 
+
+# Temp logs
+*.txt
+
