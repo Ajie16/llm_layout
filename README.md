@@ -57,20 +57,19 @@ cd scripts
 
 ### 启动服务
 
+双击 BAT 文件即可启动，**每个模型会打开一个独立的 PowerShell 窗口**：
+
 ```cmd
-:: 启动 Qwen3.6-35B-A3B
-cd F:\WorkSpace\LLAMA_LAYOUT
+:: 启动 Qwen3.6-35B-A3B (窗口标题: Qwen3.6-35B-A3B Server)
 start_qwen3.6-35b-a3b.bat
 
-:: 启动 Qwopus-GLM-18B
+:: 启动 Qwopus-GLM-18B (窗口标题: Qwopus-GLM-18B Server)
 start_qwopus-glm-18b.bat
 ```
 
 ### 停止服务
 
-```cmd
-stop_server.bat
-```
+**关闭对应的 PowerShell 窗口即可** —— llama-server 会随窗口一起终止。
 
 ### API 调用
 

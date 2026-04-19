@@ -183,5 +183,8 @@ Write-Host ""
 Write-Host "按 Ctrl+C 停止服务" -ForegroundColor Gray
 Write-Host ""
 
-# 启动服务
+# 启动服务 (前台运行，关闭窗口即退出)
 & $serverExe @argsList
+
+Write-Host ""
+Write-Host "[服务已停止] 窗口可随时关闭" -ForegroundColor Gray
